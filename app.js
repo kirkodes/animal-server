@@ -11,12 +11,11 @@ const controllers = require("./controllers");
 app.use(express.json());
 
 app.use("/user", controllers.usercontroller);
+// app.use(require("./middleware/validate-session")); //anything under here is locked by the middleware function 
 app.use("/animal", controllers.animalcontroller);
 
-
-
 db.authenticate()
-  .then(() => db.sync()) // => {force: true}
+  .then(() => db.sync()) // => {force: true} resets the database
   .then(() => {
     app.listen(3000, () =>
       console.log(`[Server: ] App is listening on Port ${3000}`)

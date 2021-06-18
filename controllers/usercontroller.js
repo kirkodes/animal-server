@@ -12,7 +12,7 @@ router.post("/create", async (req, res) => {
             username,
             password: bcrypt.hashSync(password, 13)
         });
-        let token = jwt.sign({id: User.id}, process.env.JWT_SECRET, {expiresIn: 60 * 60 * 24});
+        let token = jwt.sign({id: newUser.id}, process.env.JWT_SECRET, {expiresIn: 60 * 60 * 24});
 
         res.status(200).json({
             message: "User successfully created.",
@@ -33,11 +33,12 @@ router.post("/login", async (req, res) => {
                 username: username,
             }
         })
+        console.log("The USER", User);
         if (loggedInUser) {
             let passwordComparison = await bcrypt.compare(password, loggedInUser.password);
 
             if (passwordComparison) {
-                let token = jwt.sign({id: User.id}, process.env.JWT_SECRET, {expiresIn: 60 * 60 * 24});
+                let token = jwt.sign({id: loggedInUser.id}, process.env.JWT_SECRET, {expiresIn: 60 * 60 * 24});
 
             res.status(200).json({
                 message: "User successfully logged in.",
